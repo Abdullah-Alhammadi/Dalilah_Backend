@@ -32,3 +32,12 @@ class Place(models.Model):
 
 
 
+
+class Review(models.Model):
+    content = models.TextField()
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name='reviews')
+
+    def __str__(self):
+        return self.content     
+
+
