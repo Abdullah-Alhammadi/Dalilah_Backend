@@ -2,6 +2,21 @@ from rest_framework import serializers
 from .models import City, Category, Place, Review
 from django.contrib.auth.models import User
 
+class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'password')
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            password=validated_data['password'],
+        )
+        return user
+
 
 class CitySerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,28 +49,11 @@ class PlaceSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    place_name = serializers.StringRelatedField(source='place', read_only=True)
-    username = serializers.CharField(source='user.username', read_only=True)
+    place = PlaceSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
 
     class Meta:
         model = Review
-        fields = ['id', 'content', 'place', 'place_name', 'username', 'user']
-        extra_kwargs = {
-            'user': {'read_only': True}
-        }
+        fields = "__all__"
 
 
-class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
-
-    class Meta:
-        model = User
-        fields = ('id', 'username', 'email', 'password')
-
-    def create(self, validated_data):
-        user = User.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password'],
-        )
-        return user

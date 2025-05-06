@@ -84,10 +84,11 @@ class ReviewListCreateAPIView(APIView):
 
     def post(self, request, place_id):
         data = request.data.copy()
-        data['place'] = place_id
+        place = Place.objects.get(id=place_id)
+        data['place_id'] = place
         serializer = ReviewSerializer(data=data)
         if serializer.is_valid():
-            serializer.save(user=request.user)  # ربط الريفيو بالمستخدم
+            serializer.save(user=request.user, place=place)  # ربط الريفيو بالمستخدم
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -101,12 +102,15 @@ class ReviewDetailAPIView(APIView):
         return Response(serializer.data)
 
     def put(self, request, review_id):
-        review = get_object_or_404(Review, id=review_id)
-        serializer = ReviewSerializer(review, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            review = get_object_or_404(Review, id=review_id)
+            serializer = ReviewSerializer(review, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+        except Exception as err:
+            print(str(err))
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, review_id):
         review = get_object_or_404(Review, id=review_id)
