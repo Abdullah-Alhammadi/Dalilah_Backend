@@ -103,3 +103,47 @@ The following tables outline the main routes used for interacting with the Dalil
 - As a Registered User, I want to write a review for a specific place, so that I can share my personal experience and help guide others.
 
 - As a Registered User, I want to explore all user reviews, so that I can discover recommended and popular places easily.
+
+
+
+---
+
+## Tech Stack
+
+- **Backend Framework:** Django REST Framework  
+- **Database:** PostgreSQL  
+- **Authentication:** JWT (JSON Web Tokens)  
+- **Deployment:** Docker  
+- **Additional Tools:** Django CORS Headers (for Cross-Origin requests)
+
+---
+
+## Frontend Repository Link
+
+[Dalilah Frontend Repository](<ضع رابط مستودع الـFrontend هنا>)
+
+---
+
+## Link to Deployed Site
+
+[Dalilah Application Live Link](<ضع رابط الموقع المباشر هنا>)
+
+---
+
+## Installation Instructions (Docker)
+
+To run the backend locally using Docker, follow these instructions:
+
+### 1. Clone the repository:
+```bash
+git clone <backend-repo-url>
+cd dalilah_backend
+
+
+IceBox Features
+
+- [ ] **Image Uploads:** Allow users to upload images for places.
+- [ ] **Google Maps Integration:** Display interactive maps showing the location of each place.
+- [ ] **User Profiles:** Provide public user profiles that display their reviews and places they've added.
+- [ ] **Real-Time Notifications:** Notify users instantly when new places or reviews are added.
+- [ ] **Social Media Sharing:** Enable users to share places and reviews directly to social media platforms.
