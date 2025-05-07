@@ -65,12 +65,21 @@ The following tables outline the main routes used for interacting with the Dalil
 
 ---
 
-## Reviews
+## Reviews Routing Table
+
 <table border="1">
-<tr><th>HTTP Verb</th><th>Path</th><th>Action</th><th>Description</th></tr>
-<tr><td>POST</td><td>/reviews/</td><td>create</td><td>Create a review for a place</td></tr>
-<tr><td>GET</td><td>/reviews/</td><td>index</td><td>List all reviews (for explore section)</td></tr>
+<tr>
+  <th>HTTP Verb</th>
+  <th>Path</th>
+  <th>Action</th>
+  <th>Description</th>
+</tr>
+<tr><td>GET</td><td>/places/:place_id/reviews/</td><td>index</td><td>List all reviews for a specific place</td></tr>
+<tr><td>POST</td><td>/places/:place_id/reviews/</td><td>create</td><td>Create a review for a specific place</td></tr>
+<tr><td>PUT/PATCH</td><td>/reviews/:review_id/</td><td>update</td><td>Update a specific review</td></tr>
+<tr><td>DELETE</td><td>/reviews/:review_id/</td><td>destroy</td><td>Delete a specific review</td></tr>
 </table>
+
 
 ---
 
@@ -147,3 +156,30 @@ IceBox Features
 - [ ] **User Profiles:** Provide public user profiles that display their reviews and places they've added.
 - [ ] **Real-Time Notifications:** Notify users instantly when new places or reviews are added.
 - [ ] **Social Media Sharing:** Enable users to share places and reviews directly to social media platforms.
+
+
+
+
+## Code I’m Proud Of
+
+One part of the backend I’m especially proud of is how I implemented the `ReviewListCreateAPIView`, which efficiently handles both retrieving and adding reviews for a specific place. It ensures reviews are linked to the correct user and place, and includes authentication checks using Django REST Framework.
+
+```python
+class ReviewListCreateAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, place_id):
+        reviews = Review.objects.filter(place_id=place_id)
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, place_id):
+        data = request.data.copy()
+        place = Place.objects.get(id=place_id)
+        data['place_id'] = place
+        serializer = ReviewSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save(user=request.user, place=place)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
