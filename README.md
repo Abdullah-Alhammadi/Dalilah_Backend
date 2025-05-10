@@ -4,165 +4,100 @@ This project represents the backend system for the Dalilah application, a platfo
 
 ---
 
-## Entity Relationship Diagram (ERD)
+## 🗺️ Entity Relationship Diagram (ERD)
 
 The following diagram illustrates the relationships between the main models (User, City, Category, Place, Review):
 
-<img width="100%" src="assets/dalilah_ERD.png" />
+![ERD Diagram](assets/dalilah_ERD.png)
 
 ---
 
-# RESTful Routing
+## 🌐 RESTful Routing
 
 RESTful routing stands for **Representational State Transfer** and uses our resources (entities in our database) as the focal point of how to organize our code. It emphasizes treating data as the single source of truth, ensuring that our client requests interact properly with server endpoints through CRUD operations:
 
-- (C) Create
-- (R) Read
-- (U) Update
+- (C) Create  
+- (R) Read  
+- (U) Update  
 - (D) Delete
 
-The following tables outline the main routes used for interacting with the Dalilah API resources.
+---
+
+## 🔐 User Authentication
+| HTTP Verb | Path                    | Action  | Description                          |
+|-----------|-------------------------|---------|--------------------------------------|
+| POST      | /users/signup/          | signup  | Register a new user                  |
+| POST      | /users/login/           | login   | User login and return tokens         |
+| GET       | /users/token/refresh/   | refresh | Refresh the JWT token                |
 
 ---
 
-## User Authentication
-<table border="1">
-<tr><th>HTTP Verb</th><th>Path</th><th>Action</th><th>Description</th></tr>
-<tr><td>POST</td><td>/users/signup/</td><td>signup</td><td>Register a new user</td></tr>
-<tr><td>POST</td><td>/users/login/</td><td>login</td><td>User login and return tokens</td></tr>
-<tr><td>GET</td><td>/users/token/refresh/</td><td>refresh</td><td>Refresh the JWT token</td></tr>
-</table>
+## 🏙️ Cities
+| HTTP Verb | Path              | Action | Description                        |
+|-----------|-------------------|--------|------------------------------------|
+| GET       | /cities/          | index  | List all cities                    |
+| GET       | /cities/:city_id/ | show   | Show details of a specific city    |
 
 ---
 
-## Cities
-<table border="1">
-<tr><th>HTTP Verb</th><th>Path</th><th>Action</th><th>Description</th></tr>
-<tr><td>GET</td><td>/cities/</td><td>index</td><td>List all cities</td></tr>
-<tr><td>GET</td><td>/cities/:city_id/</td><td>show</td><td>Show details of a specific city</td></tr>
-</table>
+## 🧭 Categories
+| HTTP Verb | Path                  | Action | Description                              |
+|-----------|-----------------------|--------|------------------------------------------|
+| GET       | /categories/          | index  | List all categories                      |
+| GET       | /categories/:id/      | show   | Show details of a specific category      |
 
 ---
 
-## Categories
-<table border="1">
-<tr><th>HTTP Verb</th><th>Path</th><th>Action</th><th>Description</th></tr>
-<tr><td>GET</td><td>/categories/</td><td>index</td><td>List all categories</td></tr>
-<tr><td>GET</td><td>/categories/:category_id/</td><td>show</td><td>Show details of a specific category</td></tr>
-</table>
+## 📍 Places
+| HTTP Verb   | Path                         | Action  | Description                                 |
+|-------------|------------------------------|---------|---------------------------------------------|
+| GET         | /places/                     | index   | List all places                             |
+| POST        | /places/                     | create  | Add a new place                             |
+| GET         | /places/:place_id/           | show    | Show a specific place                       |
+| PUT/PATCH   | /places/:place_id/           | update  | Update an existing place                    |
+| DELETE      | /places/:place_id/           | destroy | Delete a place                              |
 
 ---
 
-## Places
-<table border="1">
-<tr><th>HTTP Verb</th><th>Path</th><th>Action</th><th>Description</th></tr>
-<tr><td>GET</td><td>/places/</td><td>index</td><td>List all places</td></tr>
-<tr><td>POST</td><td>/places/</td><td>create</td><td>Add a new place (select city and category)</td></tr>
-<tr><td>GET</td><td>/places/:place_id/</td><td>show</td><td>Show a specific place details</td></tr>
-<tr><td>PUT/PATCH</td><td>/places/:place_id/</td><td>update</td><td>Update an existing place</td></tr>
-<tr><td>DELETE</td><td>/places/:place_id/</td><td>destroy</td><td>Delete a place</td></tr>
-</table>
+## 💬 Reviews
+| HTTP Verb   | Path                                   | Action  | Description                              |
+|-------------|----------------------------------------|---------|------------------------------------------|
+| GET         | /places/:place_id/reviews/             | index   | List all reviews for a specific place    |
+| POST        | /places/:place_id/reviews/             | create  | Create a review for a specific place     |
+| PUT/PATCH   | /reviews/:review_id/                   | update  | Update a specific review                 |
+| DELETE      | /reviews/:review_id/                   | destroy | Delete a specific review                 |
 
 ---
 
-## Reviews Routing Table
+## 👤 User Stories
 
-<table border="1">
-<tr>
-  <th>HTTP Verb</th>
-  <th>Path</th>
-  <th>Action</th>
-  <th>Description</th>
-</tr>
-<tr><td>GET</td><td>/places/:place_id/reviews/</td><td>index</td><td>List all reviews for a specific place</td></tr>
-<tr><td>POST</td><td>/places/:place_id/reviews/</td><td>create</td><td>Create a review for a specific place</td></tr>
-<tr><td>PUT/PATCH</td><td>/reviews/:review_id/</td><td>update</td><td>Update a specific review</td></tr>
-<tr><td>DELETE</td><td>/reviews/:review_id/</td><td>destroy</td><td>Delete a specific review</td></tr>
-</table>
+### Visitor
+- Sign up to add places and write reviews
+- Login to access features and interact with the app
 
+### Registered User
+- Browse cities and select one to explore
+- Filter places by category
+- View place details
+- Add a new place via form (with dropdowns for city/category)
+- Write, edit, and delete reviews
+- Manage personal recommendations in a separate page
 
 ---
 
-# User Stories
-
-## Visitor
-
-- As a Visitor, I want to explore random reviews from other users, so that I can get inspired to visit interesting places without needing to log in.
-
-- As a Visitor, I want to sign up and create an account, so that I can add places, write reviews, and save favorite spots.
-
-- As a Visitor, I want to log in using my credentials, so that I can access my saved places and interact more with the application.
+## 🧠 What I Learned
+- Building a secure and structured REST API using Django REST Framework  
+- Implementing JWT Authentication and token refreshing  
+- Handling relationships between models effectively  
+- Writing reusable, scalable views using DRF and APIView  
+- Dockerizing a full-stack project and managing services  
+- React state management and API consumption
 
 ---
 
-## Registered User
+## 💡 Code I’m Proud Of
 
-- As a Registered User, I want to browse all available cities, so that I can select one and explore its places.
-
-- As a Registered User, I want to select a category within a city (such as cafes, restaurants), so that I can filter places based on my interest.
-
-- As a Registered User, I want to view a list of places within a selected city and category, so that I can find locations that interest me.
-
-- As a Registered User, I want to click on a place and view its detailed information, so that I can learn more about the place.
-
-- As a Registered User, I want to add a new place by filling out a form, so that I can share great locations I know with others.
-
-- As a Registered User, I want to select the city and category from dropdown menus when adding a place, so that the data stays organized and consistent.
-
-- As a Registered User, I want to write a review for a specific place, so that I can share my personal experience and help guide others.
-
-- As a Registered User, I want to explore all user reviews, so that I can discover recommended and popular places easily.
-
-
-
----
-
-## Tech Stack
-
-- **Backend Framework:** Django REST Framework  
-- **Database:** PostgreSQL  
-- **Authentication:** JWT (JSON Web Tokens)  
-- **Deployment:** Docker  
-- **Additional Tools:** Django CORS Headers (for Cross-Origin requests)
-
----
-
-## Frontend Repository Link
-
-[Dalilah Frontend Repository](<ضع رابط مستودع الـFrontend هنا>)
-
----
-
-## Link to Deployed Site
-
-[Dalilah Application Live Link](<ضع رابط الموقع المباشر هنا>)
-
----
-
-## Installation Instructions (Docker)
-
-To run the backend locally using Docker, follow these instructions:
-
-### 1. Clone the repository:
-```bash
-git clone <backend-repo-url>
-cd dalilah_backend
-
-
-IceBox Features
-
-- [ ] **Image Uploads:** Allow users to upload images for places.
-- [ ] **Google Maps Integration:** Display interactive maps showing the location of each place.
-- [ ] **User Profiles:** Provide public user profiles that display their reviews and places they've added.
-- [ ] **Real-Time Notifications:** Notify users instantly when new places or reviews are added.
-- [ ] **Social Media Sharing:** Enable users to share places and reviews directly to social media platforms.
-
-
-
-
-## Code I’m Proud Of
-
-One part of the backend I’m especially proud of is how I implemented the `ReviewListCreateAPIView`, which efficiently handles both retrieving and adding reviews for a specific place. It ensures reviews are linked to the correct user and place, and includes authentication checks using Django REST Framework.
+One part of the backend I’m especially proud of is the `ReviewListCreateAPIView`, which efficiently handles both retrieving and adding reviews for a specific place. It ensures reviews are linked to the correct user and place while enforcing authentication.
 
 ```python
 class ReviewListCreateAPIView(APIView):
@@ -179,7 +114,68 @@ class ReviewListCreateAPIView(APIView):
         data['place_id'] = place
         serializer = ReviewSerializer(data=data)
         if serializer.is_valid():
-            serializer.save(user=request.user, place=place)
+            serializer.save(user=request.user, place=place)  # ربط الريفيو بالمستخدم
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+```
+
+
+## 💻Website Features
+
+- Fully responsive interface using React
+- Video hero section with animated header
+- Smooth route transitions with protected access
+- Review system with edit/delete options
+- Dynamic loading and splash animation
+- Conditional rendering based on user state
+- Location opens in **Google Maps** via clickable label
+- "Your Recommendations" page with full CRUD functionality
+
+---
+
+## 🔮 Icebox / Future Features
+
+- ⭐ **Place Rating System:** Allow users to rate places based on their experience
+- 📌 **User Badging:** Promote top contributors to official locals for the platform
+- 🖼️ **Image Upload:** Support user-uploaded images for each place
+- 🗺️ **Embedded Interactive Maps:** Display map previews of each location
+- 🔔 **Real-Time Notifications:** Notify users when a new place or review is added
+- 🌍 **User Profiles:** Show user’s added places and reviews
+- 📲 **Social Media Sharing:** Allow users to share reviews or places directly
+- 🧠 **Smart Suggestions:** Suggest places based on what users save or review
+
+---
+
+## 🔗 Project Links
+
+| Item            | Link                          |
+|-----------------|-------------------------------|
+| Backend         | http://localhost:8000         |
+| Frontend        | http://localhost:5173         |
+| Frontend Repo   | https://github.com/Abdullah-Alhammadi/Dalilah_Frontend |
+| Backend Repo    | https://github.com/Abdullah-Alhammadi/Dalilah_Backend  |
+
+---
+
+## 🐳 Installation (Docker)
+
+```bash
+# Clone the project
+git clone <your-backend-repo-url>
+cd dalilah_backend
+
+# Start Docker
+docker compose up --build
+
+```
+
+
+
+
+## 🏁 Final Notes
+
+Dalilah was built to provide a **local-first discovery experience**, where users can explore cities through real recommendations shared by locals — not generic tourist lists. The app combines a clean user experience with essential CRUD functionality, JWT authentication, and dynamic data loading. 
+
+With more time, Dalilah could evolve into a full-featured social travel platform where locals earn badges, places are rated, and profiles showcase user contributions. I'm proud of what I’ve built, and excited about its potential.
 
